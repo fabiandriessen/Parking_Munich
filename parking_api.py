@@ -73,8 +73,11 @@ def find_nearest_parking(latlon, expected_arrival=datetime.now()):
             df['est_dist_'+str(j)][i] = dur_dist[1]['text']
     
     #only first 5 are interesting, drop irrelevant columns
-    df=df[:5].drop(columns=['Bahnhof','BahnhofID','GlobaleID', 'Name','Niveau,N,10,0','bird_dist','MVTT_x','MVTT_y', "Georeferenz", "Name DIVA", "lat_lon"])
+    df=df[:5].drop(columns=['Bahnhof','BahnhofID','GlobaleID', 'Name','Niveau,N,10,0','bird_dist','MVTT_x','MVTT_y', "Georeferenz", "Name DIVA", "lat_lon", 'P_women','P_family','P_invalid', 'Entrance'])
     df.rename(columns={"Alternative_name": "Name"}, inplace=True)
+    cols = list(df.columns.values) #Make a list of all of the columns in the df
+    cols.pop(cols.index('Link')) #Remove x from list
+    df = df[cols+['Link']] #Create new dataframe with columns in the order you want
     
     #subset availability
     availability = df.filter(regex='OCC_')
@@ -133,7 +136,8 @@ def api_all():
     df, availability = find_nearest_parking(user_address)
     #now also create figure
     fig = vis_occ(availability)
-    return jsonify(df.to_dict(orient='records'))  
+#     return jsonify(df.to_dict(orient='records'))
+    return render_template('simple.html',  tables=[df.to_html(classes='data')], titles=df.columns.values)
     
 @app.route('/check_availability')
 def show_index():
