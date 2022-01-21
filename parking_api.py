@@ -17,67 +17,125 @@ import os
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
-def find_nearest_parking(latlon, expected_arrival=datetime.now()):
-    """Function to find the nearest parkingplace in Munich given a latitude, 
-    longtitude or address and a dataframe with parkings that contains for each entry \
-    at least a lon and lat column and optionally an expected arrival time."""
-    #define dataframe
+def find_nearest_parking(origin, destination, parking_time, display_dist=False, disabled=False, woman=False, family=False, expected_arrival=datetime.now()):
+    """Function to serve as a decision making tool to find the nearest parkingplace in Munich given a address,
+    and a dataframe with parkings that contains for each entry at least a lon and lat column 
+    and optionally an expected arrival time (by default set to datetime.now()"""
+    ############################################################################################
+    ##step1: reading in data and preparing data    
+    ############################################################################################
+    #readin dataframe
     df=pd.read_excel('Data/P_R_Datenbank_2019_ohne.xlsx')
-    
     #create needed lat and lon if normal address is input
-    if type(latlon) is tuple:
-        lat_r=latlon[0]
-        lon_r=latlon[1]
-    else:
-        r= requests.get(f"https://maps.googleapis.com/maps/api/geocode/json?address={'Marienplatz 1,Munich,Germany'}&key={K}")
-        #unpack
-        results = json.loads(r.content)
-        lat_r=results['results'][0]['geometry']['location']['lat']
-        lon_r=results['results'][0]['geometry']['location']['lng']
+    r= requests.get(f"https://maps.googleapis.com/maps/api/geocode/json?address={destination}&key={K}")
+    #unpack
+    results = json.loads(r.content)
+    #save lat, lon (to calculate bird_dist) and district (to calculate street parking tariffs)
+    district = results['results'][0]['address_components'][2]['long_name']
+    lat_r = results['results'][0]['geometry']['location']['lat']
+    lon_r = results['results'][0]['geometry']['location']['lng']
     
+    parking_time=tuple(map(int, parking_time.split(', ')))
+
     #create new columns to fill later
     df['bird_dist'] = 0
+    df['Driving to parking'] = 0
     
     df['est_time_walking'] = 0
     df['est_time_bicycling'] = 0
     df['est_time_transit'] = 0
     
-    df['est_dist_walking'] = 0
-    df['est_dist_bicycling'] = 0
-    df['est_dist_transit'] = 0
+    if display_dist:
+        df['est_dist_walking'] = 0
+        df['est_dist_bicycling'] = 0
+        df['est_dist_transit'] = 0
     
     #combine lat and lon in one column
     df['lat_lon']=list(zip(df.lat, df.lon))
     
-    #calculate distance as the crow flies from dest to all parkings
+    ############################################################################################
+    #step 2: calculate distance as the crow flies from dest to all parkings
+    ############################################################################################
+    
     df['bird_dist'] = df.lat_lon.apply(lambda p: hs.haversine((lat_r,lon_r),p))
     
     #sort values based on bird_dist, reset index
     df.sort_values(by='bird_dist',inplace=True)
     df.reset_index(drop=True, inplace=True)
     
-    #calculate travel times to final dest for 5 parkings that are the nearest as the crow flies and add them to df
+    ############################################################################################
+    #step 3:calculate travel time and approx costs if they where to drive directly to dest
+    ############################################################################################
+
+    r = requests.get(f"https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&mode=driving&key={K}")
+    #unpack
+    results = json.loads(r.content)
+    legs = results.get("routes").pop(0).get("legs")
+    df['Driving to destination'] = legs[0].get("duration")['text']
+    
+    costsin1 = ['Milbershofen', 'Trudinger-Riem', 'Schwanthalerhöhe', 'Ludwigsvorstadt', 'Isarvorstadt', 'Au', 'Haidhausen',
+                'Au-haidhausen', 'Giesing', 'Steinhausen', 'Tivoli', 'Maxvorstadt', "Schwabing-west", "Glockenbach", "Untersendling"]
+    costsin2 = ['Moosach', 'Neuhausen', "Sendling-Westpark", "Giesling"]
+    
+    if ('Altstadt' in district) or ('Lehel' in district):
+        df['Current costs streetparking'] = round((parking_time[0]*2.5+(parking_time[1]/60)*2.5),2)
+    elif district in costsin1:
+        df['Current costs streetparking'] = round(max((parking_time[0]*1+(parking_time[1]/60)*1), 6),2)
+        df['Planned costs streetparking'] = round(max((parking_time[0]*1.9+(parking_time[1]/60)*1.9), 12),2)
+    elif district in costsin2:
+        df['Planned costs streetparking'] = round(max((parking_time[0]*1.9+(parking_time[1]/60)*1.9), 12),2)
+    else:
+        df['Current costs streetparking'] = 'free'
+        
+    ############################################################################################
+    #step 4:calculate travel times to final dest for 5 nearest parkings for 3 forms of transport
+    ############################################################################################
+    
     for i in range (5):
+        r = requests.get(f"https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={df.lat[i]},{df.lon[i]}&mode=driving&key={K}")
+            #unpack
+        results = json.loads(r.content)
+        legs = results.get("routes").pop(0).get("legs")
+        df['Driving to parking'][i] = legs[0].get("duration")['text']
+            
         for j in ['walking','bicycling','transit']:
             #run google api and unpack relevant variables
-            if type(latlon) is tuple:
-                r = requests.get(f"https://maps.googleapis.com/maps/api/directions/json?origin={df.lat[i]},{df.lon[i]}&destination={latlon[0]},{latlon[1]}&mode={j}&key={K}")
-            else:
-                r = requests.get(f"https://maps.googleapis.com/maps/api/directions/json?origin={df.lat[i]},{df.lon[i]}&destination={latlon}&mode={j}&key={K}")
+            r = requests.get(f"https://maps.googleapis.com/maps/api/directions/json?origin={df.lat[i]},{df.lon[i]}&destination={destination}&mode={j}&key={K}")
             #unpack
             results = json.loads(r.content)
             legs = results.get("routes").pop(0).get("legs")
             dur_dist=(legs[0].get("duration"), legs[0].get("distance"))
             #save data in previously assigned columns
             df['est_time_'+str(j)][i] = dur_dist[0]['text']
-            df['est_dist_'+str(j)][i] = dur_dist[1]['text']
+            if display_dist:
+                df['est_dist_'+str(j)][i] = dur_dist[1]['text']
+    
+    ############################################################################################
+    #step 5: final output data selection and preparation
+    ############################################################################################
     
     #only first 5 are interesting, drop irrelevant columns
-    df=df[:5].drop(columns=['Bahnhof','BahnhofID','GlobaleID', 'Name','Niveau,N,10,0','bird_dist','MVTT_x','MVTT_y', "Georeferenz", "Name DIVA", "lat_lon", 'P_women','P_family','P_invalid', 'Entrance'])
+    df=df[:5].drop(columns=['lat','lon','Bahnhof','BahnhofID','GlobaleID', 'Name','Niveau,N,10,0','bird_dist','MVTT_x','MVTT_y', "Georeferenz", "Name DIVA", "lat_lon",'Entrance'])
+    
     df.rename(columns={"Alternative_name": "Name"}, inplace=True)
-    cols = list(df.columns.values) #Make a list of all of the columns in the df
-    cols.pop(cols.index('Link')) #Remove x from list
-    df = df[cols+['Link']] #Create new dataframe with columns in the order you want
+    to_k =['Name', 'Driving to parking','est_time_walking','est_time_bicycling', 'est_time_transit', 'Day_price',
+           'Ticket_for_10', 'Month_ticket', 'Year_ticket','Driving to destination']
+    
+    if 'Current costs streetparking' in df.columns:
+        to_k.append('Current costs streetparking')
+    if 'Planned costs streetparking' in df.columns:
+        to_k.append('Planned costs streetparking')
+        
+    if woman:
+        to_k.append('P_women')
+    if disabled:
+        to_k.append('P_invalid')
+    if family:
+        to_k.append('P_family')
+        
+    to_k.append('Capacity')
+    to_k.append('Link')
+    df = df[to_k] #Create new dataframe with columns in the order you want
     
     #subset availability
     availability = df.filter(regex='OCC_')
@@ -132,8 +190,11 @@ def home():
 @app.route('/giveindestination', methods=['GET'])
 def api_all():
     query_parameters = request.args
-    user_address = query_parameters.get('destination')
-    df, availability = find_nearest_parking(user_address)
+    origin = query_parameters.get('origin')
+    destination = query_parameters.get('destination')
+    parktime = query_parameters.get('parkingtime')
+    
+    df, availability = find_nearest_parking(origin,destination,parktime)
     #now also create figure
     fig = vis_occ(availability)
 #     return jsonify(df.to_dict(orient='records'))
