@@ -9,6 +9,8 @@ import json
 import googlemaps
 from datetime import datetime
 from API import K
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -114,6 +116,12 @@ def find_nearest_parking(origin, destination, parking_time, display_dist=False, 
     df=df[:5].drop(columns=['lat','lon','Bahnhof','BahnhofID','GlobaleID', 'Name','Niveau,N,10,0','bird_dist','MVTT_x','MVTT_y', "Georeferenz", "Name DIVA", "lat_lon",'Entrance'])
     
     df.rename(columns={"Alternative_name": "Name"}, inplace=True)
+    
+    #subset availability
+    availability = df.filter(regex='OCC_')
+    availability = availability.join(df.loc[:,'Name'], lsuffix='_caller', rsuffix='_other')
+    availability.set_index('Name', drop=True, inplace=True)
+    
     to_k =['Name', 'Driving to parking','est_time_walking','est_time_bicycling', 'est_time_transit', 'Day_price',
            'Ticket_for_10', 'Month_ticket', 'Year_ticket','Driving to destination']
     
@@ -133,14 +141,10 @@ def find_nearest_parking(origin, destination, parking_time, display_dist=False, 
     to_k.append('Link')
     df = df[to_k] #Create new dataframe with columns in the order you want
     
-    #subset availability
-    availability = df.filter(regex='OCC_')
-    availability = availability.join(df.loc[:,'Name'], lsuffix='_caller', rsuffix='_other')
-    availability.set_index('Name', drop=True, inplace=True)
-    
     #remove from other dataframe
     df.drop(list(df.filter(regex = 'OCC_')), axis = 1, inplace = True)
     return(df, availability)
+
 
 def vis_occ(a):
 
@@ -166,7 +170,6 @@ def vis_occ(a):
     ax.set_ylabel('Expected occupancy [%]')
     ax.set_title('Expected occupancy during the day')
     for i,j in enumerate(a.index):
-        print()
         ax=a.iloc[i].plot(alpha=0.5)
 
     # legend = plt.legend(loc="lower left", edgecolor="black", fontsize=8, framealpha=0)
@@ -190,11 +193,27 @@ def api_all():
     destination = query_parameters.get('destination')
     parktime = query_parameters.get('parkingtime')
     
-    df, availability = find_nearest_parking(origin,destination,parktime)
+    woman = False
+    family = False
+    invalid = False
+    display_dist = False
+    
+    if query_parameters.get('woman'):
+        woman = query_parameters.get('woman')
+    if query_parameters.get('family'):
+        family = query_parameters.get('family')
+    if query_parameters.get('invalid'):
+        invalid = query_parameters.get('invalid')
+    if query_parameters.get('display_dist'):
+        display_dist = query_parameters.get('display_dist')
+    
+    df, availability = find_nearest_parking(origin, destination, parktime, display_dist, invalid, woman, family)
     #now also create figure
     fig = vis_occ(availability)
-#     return jsonify(df.to_dict(orient='records'))
     return render_template('simple.html',  tables=[df.to_html(classes='data')], titles=df.columns.values)
+#     left here for testing
+#     return jsonify(origin, destination, parktime)
+
     
 @app.route('/check_availability')
 def show_index():
