@@ -9,10 +9,6 @@ import json
 import googlemaps
 from datetime import datetime
 from API import K
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
-import io
-import os
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
