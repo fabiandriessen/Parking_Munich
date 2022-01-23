@@ -8,8 +8,9 @@ _An activated google API key named k in a file named API.py must be added to the
 
 This project is a Python based Application Programming Interface (API), that can be seen as a tool to support consumers to find the nearest off-street parking in Munich. Moreover, the application enables consumers to compare these off-street parking with on-street parking near their destination. If applicable the application also calculates and views the costs if new parking tariffs of the City of Munich, that are currently under review, are indeed implemented. These costs are calculated depending on the city part, according to the tariffs on the map below.
 
-![Figure 1-3](static/parking_tariffs.png?raw=True "Parking tariffs Munich")
 
+![Figure 1-3](static/parking_tariffs.png?raw=True "Parking tariffs Munich")
+_Source: https://www.sueddeutsche.de/muenchen/muenchen-parkgebuehren-anhebung-kritik-1.5504642_
 
 **Inputs**
 
