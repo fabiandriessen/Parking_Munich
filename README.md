@@ -1,147 +1,165 @@
-----------------------------------------------------------------------------------------------------------------------------
-1. Project title :API to promote off-street parking munich
-----------------------------------------------------------------------------------------------------------------------------	
+## API to promote off-street parking munich
 
-----------------------------------------------------------------------------------------------------------------------------2. Project description
-----------------------------------------------------------------------------------------------------------------------------
+**Important note**
 
-API to find the nearest off-parking in Munich, given the origin (anywhere, also outside of Munich), destination and parking time (stay duration). The API will return a selection of the five nearest parkings, the traveltime by car to the given destination, to the parking and traveltimes by foot, bike or public transport from the parking garage to the given destination. 
+_An activated google API key named k in a file named API.py must be added to the folder. This key is not provided, because this key must be linked to you bank account. However, usage is initially free of charge (e.g. if the 200 euro free credit budget is not exceeded). The API uses the google API multiple times, though all testing and development required not more than 6 euros of credits._
 
-Moreover, the application also returns costs of street-parking and the planned street-parking costs if these are available and relevant. In this manner, the application enables consumers to make a adequate decision and stimulates off-street parking and alternative means of last-mile transport.
+## Project description
 
-Currently only P+R locations that are regulated by the MVV are in the dataset. However, any commercially or publicly operated parking in Munich may be added to the dataset \Parking_Munich\Data\P_R_Datenbank_2019_ohne.xlsx with at least a name, lat and lon, for the application to calculate traveltimes and compare it with the street-parking alternative in the region of the destination.
+This project is a Python based Application Programming Interface (API), that can be seen as a tool to support consumers to find the nearest off-street parking in Munich. Moreover, the application enables consumers to compare these off-street parking with on-street parking near their destination. If applicable the application also calculates and views the costs if new parking tariffs of the City of Munich, that are currently under review, are indeed implemented. These costs are calculated depending on the city part, according to the tariffs on the map below.
 
---------------------------------------------------------------
---------------------------------------------------------------
-3. ProjectOutline
-----------------------------------------------------------------------------------------------------------------------------
-
---------------------------------------------------------------
-File						Description
---------------------------------------------------------------
-1. Databases				Currently only the first 							database is used in the API, 
-						the other datafiles may be 							appended after thorough cleaning
---------------------------------------------------------------
-
-Parking_Munich\Data\			MVV P+R database edited for 
-P_R_Datenbank_2019_ohne.xlsx	specific API use								
-Parking_Munich\Data\Parkings	Partly cleaned OSM parking data 
-_in_and_near.xlsx			Munich Area
-
-Parking_Munich\Data\Parkings	Partly cleaned OSM parking data,
-_in_only			 		subset of places within Munich
-
-Parking_Munich\Data\Only_in_	Partly cleaned OSM parking data, 
-and_with_cap				subset of places within Munich 
-						and only with known capacity
-
-Parking_Munich\Data\Muenchen.	Open Street Maps file for Munich
-osm.pbf					area
---------------------------------------------------------------
-
-2. Application Programming 		Used to make Python functions 
-Interface (API)				requestable via the internet
---------------------------------------------------------------									
-Parking_Munich\parking_api.py	Actual API, uses static, 								template and Data folders
---------------------------------------------------------------
-
-3. Jupyter Notebooks			Used to analyse datasets and to 							prove concepts
---------------------------------------------------------------	
-Parking_Munich\parking_applic	Jupyter Notebook with two 
-ation_clean.ipynb			functions written to use in the 							API, may be used for testing
-
-Parking_Munich\Charging.ipynb	Jupyter lab to subset OSM data 							on charging stations in Munich
-
-Parking_Munich\Munich_dataset	Jupyter lab to analyse and 
-_analysis					extract and the OSM data 
-						to create the three non-MVV 							datasets
-4. Screenshots				Screenshots of the API to 								illustarate the functionalities 							of the API
---------------------------------------------------------------	
-Parking_Munich\Screens		jpg files to illustrate usage
+![Figure 1-3](static/parking_tariffs.png?raw=True "Parking tariffs Munich")
 
 
-----------------------------------------------------------------------------------------------------------------------------	
-4. How to Install and Run the Project
-----------------------------------------------------------------------------------------------------------------------------	
-This is a python based project, developed using Python 3.8, running the api requires the following packages, that may all be installed using pip install ... in anaconda prompt
+**Inputs**
 
-flask
-pandas
-numpy
-matplotlib.pyplot
-haversine
-requests
-json
-googlemaps
-datetime
-any excel reader
+As an input it requires an:
+- Origin (anywhere, also outside of Munich)
+- Destination (inside or around Munich)
+- Parking time of max 24 hours. 
+
+**Outputs**
+
+The API will return a selection of the five nearest parkings, the traveltime by car to the given destination, to the parking and traveltimes by foot, bike or public transport from the parking garage to the given destination. Moreover, the application also returns costs of street-parking and the planned street-parking costs if these are available and relevant. In this manner, the application enables consumers to make an adequate decision and stimulates off-street parking and alternative means of last-mile transport.
+
+Currently only P+R locations that are regulated by the MVV are in the dataset. However, any commercially or publicly operated parking in Munich may be added to the dataset \Parking_Munich\Data\P_R_Datenbank_2019_ohne.xlsx with at least a name, lat and lon, for the application to calculate traveltimes and compare it with the street-parking alternative in the region of the destinations. Parking at P+R locations is limited to max 24h.
+
+## Table of contents
+1. Databases
+
+_Currently only the first database is used in the API, the other datafiles may be appended after adequate cleaning._
+
+| File path                                     | Description                                                    |
+|-----------------------------------------------|----------------------------------------------------------------|
+| P_R_Datenbank_2019_ohne.xlsx                  | MVV P+R database edited for specific API use                   |
+| Parking_Munich\Data\Muenchenosm.pbf		| Open Street Maps file for Munich				 |
+| Parking_Munich\Data\Parkings_in_and_near.xlsx | Partly cleaned OSM parking data Munich area                    |
+| Parking_Munich\Data\Parkings_in_only          | Subset of file above with only places within Munich		 |
+| Parking_Munich\Data\Only_in_and_with_cap	| Subset of file above with only parkings with known capacity	 |
+
+2. API
+		
+_Used to make Python functions requestable via the internet._
+
+| File path                                     | Description                                                    |
+|-----------------------------------------------|----------------------------------------------------------------|
+| Parking_Munich\parking_api.py              	| Actual API, uses static, template and Data folders             |
+								
+
+3. Jupyter Notebooks
+		
+_May be used to analyse datasets and recreate datasets in \Data folder out of the OSM file._
+
+| File path                                     	| Description                                                    |
+|-----------------------------------------------	|----------------------------------------------------------------|
+| Parking_Munich\parking_application_clean.ipynb	| Contains 2 API functions, useful for testing purposes		 |
+| Parking_Munich\Charging.ipynb				| Subset OSM charging station data		 		 |
+| Parking_Munich\Munich_dataset_analysis		| Analyse and extract and the OSM data				 |
+
+4. Screenshots				
+
+| File path                                     	| Description                                                    |
+|-----------------------------------------------	|----------------------------------------------------------------|
+| Parking_Munich\Screens				| Screenshots of the API to illustarate functionalities		 |
+
+## How to install and run the project
+
+This is a python based project developed using Python 3.8, 
+all listed packes below may all be installed using pip install ... in anaconda prompt.
+
+Running the API requires the following packages:
+
+- flask
+- pandas
+- numpy
+- matplotlib.pyplot
+- haversine
+- requests
+- json
+- googlemaps
+- datetime
+- any excel reader
 
 To run all of the other jupyter notebooks the following other packages may be needed:
 
-osmnx
-pyrosm
-ast
+- osmnx
+- pyrosm
+- ast
  
-----------------------------------------------------------------------------------------------------------------------------	
-Important note!!
-----------------------------------------------------------------------------------------------------------------------------	
-Lastly, also an activated google API key named k in a file named API.py must be added to the folder. This key is not provided, because this key must be linked to you bank account. However, usage is initially free of charge (e.g. if the 200 euro free credit budget is not exceeded). The API uses the google API multiple times, though all testing and development required not more than 6 euros of credits.
+## How to use the project
 
---------------------------------------------------------------
---------------------------------------------------------------
-5. How to use the project
-----------------------------------------------------------------------------------------------------------------------------
+To use the project, open a CMD that has access your Python installation. 
 
-To use the project, open a CMD through which you can execute python statements. 
-
-Run the following statements:
---------------------------------------------------------------
 1. cd *path to folder*
-2. activate *specific environment*
+2. activate *specific environment with all required packages*
 3. python parking_api.py
---------------------------------------------------------------
 
-This will start a local host, go there to try out the following functionalities:
---------------------------------------------------------------	
+_This will start a local host, go there to try out the following functionalities:_
+
 1. Find the best parking given a origin, destination (in Munich) and parkingtime.
---------------------------------------------------------------	
-/giveindestination?/origin=*address1*+destination=*adress2*+parkingtime=*hours, minutes*
 
-address 1 and 2 must be given in like this: 
---------------------------------------------------------------	
-street,streetnumber (both optional), city, country. 
---------------------------------------------------------------	
-Other forms may also work depending on the google API but might fail. Check this for e.g. giving in a POI or similar format.
+Navigate to:
 
-parking time must be given in like this the first number being the amount of hours and the second number the amount of minutes:
---------------------------------------------------------------7, 10
---------------------------------------------------------------
+http://127.0.0.1:5000/giveindestination?/ origin= *address1* + destination= *adress2* +parkingtime= *hours, minutes*
+
+- Address 1 and 2 must be given in like this: *street,streetnumber (both optional), city, country* 
+
+Other forms may also work depending on the google API, but might fail. Check the google directions documentation too find out all other adress forms that are accepted.
+
+- Parking time must be given in like this the first number being the amount of hours and the second number the amount of minutes: *7, 10*
 
 Lastly some extra functions are available, add the following to the link to see the following extra information:
+| Argument	| Also show:				|
+| --------------|---------------------------------------|
+| invalid=True	| Present parkings for disabled	  	|
+| woman=True	| Present womens parkings		|
+| family=True	| Present familiy parkings		|
+| display_dist	| Travel distances to destination	|
 
-+invalid=True	available parkings for disabled
-+woman=True	available womens parkings
-+family=True	available familiy parkings
-+display_dist	also show actual distances to destination from 				parking destination for three individual forms of 			transport
-
-
---------------------------------------------------------------	
 2. View expected availability
---------------------------------------------------------------
-After a query is excuted a jpg is generated to visualize the availability for the found parkings. This figure is available at http://127.0.0.1:5000/check_availability or can be viewed directly from the static folder.
 
-----------------------------------------------------------------------------------------------------------------------------
-6. Example queries
-----------------------------------------------------------------------------------------------------------------------------	
-Traveling from augsburg to the arcisstrasse in Munich, planning to stay 7 hours and 15 miutes and just interested in core information:
+_After a query is excuted a jpg is generated to visualize the availability for the found parkings._ 
 
-http://127.0.0.1:5000/giveindestination?origin=augsburg,germany&destination=arcisstraﬂe 23,Munich,Germany&parkingtime=7, 15
------------------------------------------------------------------	
-Travelling from Freising to Hohenschwangaustraﬂe,17, planning to stay 6 hours and 30 minutes and interested in all other available information
+This figure is available at http://127.0.0.1:5000/check_availability or can be viewed directly from the static folder.
 
-http://127.0.0.1:5000/giveindestination?origin=Freising,Germany&destination=Hohenschwangaustraﬂe,17,Munich,Germany&parkingtime=6, 30&woman=True&invalid=True&family=True&display_dist=True
------------------------------------------------------------------
-Travelling from Vaterstetten to Marienplatz, planning to stay 10 hours and interested in all other available information
 
-http://127.0.0.1:5000/giveindestination?origin=vaterstetten,Germany&destination=marienplatz1,Munich,Germany&parkingtime=10, 0&woman=True&invalid=True&family=True&display_dist=True
+## Example queries
 
+_Below some example queries are presented, the results of these give queries can be found in the screens folder_
+
+1. Traveling from augsburg to the arcisstrasse in Munich, planning to stay 7 hours and 15 miutes and just interested in core information:
+
+http://127.0.0.1:5000/giveindestination?origin=augsburg,germany&destination=arcisstra%C3%9Fe%2023,Munich,Germany&parkingtime=7,%2015
+
+Results in:
+
+![Figure 1-2](Screens/overview_result_query_1_from_readme.jpg?raw=True "Results from query 1: overview")
+
+Navigating to http://127.0.0.1:5000/check_availability afterwards gives:
+
+![Figure 1-3](Screens/Availability_result_query_1_from_readme.jpg?raw=True "Results from query 1: availability")
+
+2. Travelling from Freising to Hohenschwangaustra√üe,17, planning to stay 6 hours and 30 minutes and interested in all other available information
+
+http://127.0.0.1:5000/giveindestination?origin=Freising,Germany&destination=Hohenschwangaustra√üe,17,Munich,Germany&parkingtime=6,30&woman=True&invalid=True&family=True&display_dist=True
+
+Results in:
+
+![Figure 1-4](Screens/overview_result_query_2_from_readme.jpg?raw=True "Results from query 2: overview")
+
+Navigating to http://127.0.0.1:5000/check_availability afterwards gives:
+
+![Figure 1-5](Screens/Availability_result_query_2_from_readme.jpg?raw=True "Results from query 2: availability")
+
+
+3. Travelling from Vaterstetten to Marienplatz, planning to stay 10 hours and interested in all other available information
+
+http://127.0.0.1:5000/giveindestination?origin=vaterstetten,Germany&destination=marienplatz1,Munich,Germany&parkingtime=10,%200&woman=True&invalid=True&family=True&display_dist=True
+
+Results in:
+
+![Figure 1-6](Screens/overview_result_query_3_from_readme.jpg?raw=True "Results from query 3: overview")
+
+Navigating to http://127.0.0.1:5000/check_availability afterwards gives:
+
+![Figure 1-7](Screens/Availability_result_query_3_from_readme.jpg?raw=True "Results from query 3: availability")
