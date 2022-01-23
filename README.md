@@ -117,20 +117,35 @@ _Below some example queries are presented, the results of these give queries can
 
 http://127.0.0.1:5000/giveindestination?origin=augsburg,germany&destination=arcisstra%C3%9Fe%2023,Munich,Germany&parkingtime=7,%2015
 
+Results in:
+
 ![Figure 1-1](Screens/overview_result_query_1_from_readme.jpg?raw=True "Results from query 1: overview")
+
+Navigating to http://127.0.0.1:5000/check_availability afterwards gives:
+
+![Figure 1-2](Screens/Availability_result_query_1_from_readme.jpg?raw=True "Results from query 1: availability")
 
 2. Travelling from Freising to Hohenschwangaustraße,17, planning to stay 6 hours and 30 minutes and interested in all other available information
 
 http://127.0.0.1:5000/giveindestination?origin=Freising,Germany&destination=Hohenschwangaustraße,17,Munich,Germany&parkingtime=6,30&woman=True&invalid=True&family=True&display_dist=True
 
+Results in:
 
 ![Figure 1-3](Screens/overview_result_query_2_from_readme.jpg?raw=True "Results from query 2: overview")
+
+Navigating to http://127.0.0.1:5000/check_availability afterwards gives:
+
+![Figure 1-4](Screens/Availability_result_query_2_from_readme.jpg?raw=True "Results from query 2: availability")
+
 
 3. Travelling from Vaterstetten to Marienplatz, planning to stay 10 hours and interested in all other available information
 
 http://127.0.0.1:5000/giveindestination?origin=vaterstetten,Germany&destination=marienplatz1,Munich,Germany&parkingtime=10,%200&woman=True&invalid=True&family=True&display_dist=True
 
+Results in:
 
 ![Figure 1-5](Screens/overview_result_query_3_from_readme.jpg?raw=True "Results from query 3: overview")
 
+Navigating to http://127.0.0.1:5000/check_availability afterwards gives:
 
+![Figure 1-6](Screens/Availability_result_query_3_from_readme.jpg?raw=True "Results from query 3: availability")
