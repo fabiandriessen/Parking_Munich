@@ -55,22 +55,22 @@ all listed packes below may all be installed using pip install ... in anaconda p
 
 Running the API requires the following packages:
 
-flask
-pandas
-numpy
-matplotlib.pyplot
-haversine
-requests
-json
-googlemaps
-datetime
-any excel reader
+- flask
+- pandas
+- numpy
+- matplotlib.pyplot
+- haversine
+- requests
+- json
+- googlemaps
+- datetime
+- any excel reader
 
 To run all of the other jupyter notebooks the following other packages may be needed:
 
-osmnx
-pyrosm
-ast
+- osmnx
+- pyrosm
+- ast
  
 ## How to use the project
 
