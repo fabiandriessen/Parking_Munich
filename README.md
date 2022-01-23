@@ -10,20 +10,44 @@ This project is a Python based Application Programming Interface (API), that can
 
 
 ![Figure 1-3](static/parking_tariffs.png?raw=True "Parking tariffs Munich")
-_Source: https://www.sueddeutsche.de/muenchen/muenchen-parkgebuehren-anhebung-kritik-1.5504642_
+_Source (edited): https://www.sueddeutsche.de/muenchen/muenchen-parkgebuehren-anhebung-kritik-1.5504642_
 
 **Inputs**
 
 As an input it requires an:
-- Origin (anywhere, also outside of Munich)
-- Destination (inside or around Munich)
+- Origin (anywhere, also outside of Munich).
+- Destination (inside or around Munich).
 - Parking time of max 24 hours. 
 
 **Outputs**
 
-The API will return a selection of the five nearest parkings, the traveltime by car to the given destination, to the parking and traveltimes by foot, bike or public transport from the parking garage to the given destination. Moreover, the application also returns costs of street-parking and the planned street-parking costs if these are available and relevant. In this manner, the application enables consumers to make an adequate decision and stimulates off-street parking and alternative means of last-mile transport.
+The API will return:
+- The traveltime by car to the given destination.
+- The five nearest parkings in the dataset, their capacities, and the tariffs that apply there.
+- The traveltime from the place of origin to each of the parkings.
+- Traveltimes by foot, bike or public transport from each parking garage to the given final destination.
+- Current and planned street parking costs given the parking time.
+- Optionally: information on present disabled, women or family parkingspots.
 
-Currently only P+R locations that are regulated by the MVV are in the dataset. However, any commercially or publicly operated parking in Munich may be added to the dataset \Parking_Munich\Data\P_R_Datenbank_2019_ohne.xlsx with at least a name, lat and lon, for the application to calculate traveltimes and compare it with the street-parking alternative in the region of the destinations. Parking at P+R locations is limited to max 24h.
+In this manner, the application enables consumers to make an adequate decision, and stimulates off-street parking and alternative means of last-mile transport.
+
+**Relevance**
+
+The reason for this project is the wish of the municipality of Munich to decrease car traffic in general, promote P+R locations and reduce on-street parking. Furthermore this application is also increasingly relevant for consumers because it has the potential to reduce their travel times and parking costs. Adittionally, proposed plans to significantly rise on-street parking tariffs for all non-residents and ban street parking in at a growing degree and the emergence of electric vehicles are expected to make this application even more relevant in the near future.
+
+**Target group**
+
+This application is relevant for regular middle long-term or long-term parking consumers in the city of Munich who cannot apply for a resident permit, or residents that want to park their car in an off-street parking garage. The application may help them to select the best parking, future extensions aim to focus on users with an electric car, enable users to book parkings by engaging in long-term contracts and facilitate sublenting parkings by consumers via the platform.
+
+**Incorporated parkings**
+
+Currently only P+R locations that are regulated by the MVV are in the dataset. However, any commercially or publicly operated parking in Munich may be added to the dataset \Parking_Munich\Data\P_R_Datenbank_2019_ohne.xlsx with at least a name, lat and lon, for the application to calculate traveltimes and compare it with the street-parking alternative in the region of the destinations. Parking at P+R locations is limited to max 24h. 
+
+**Challenges and plans for future features**
+
+The data on other parkings and charging stations is planned to be implemented. This data has been extracted from Open Street Maps (OSM), but cleaning this data and converging it to the required format was not possible within the time of this project. However, the raw data, some partly cleaned datasets, and the Jupyter Notebooks that are used to extract and clean the data are also provided at this GitHub page.
+
+Besides this, the plan is to develop an smartphone application for end-users and to engage in contracts with parking suppliers. The goal is also serve as a booking service for long-term parking, and not just as a decison-making tool. Up untill now a proto.io application has been made that is currently being prepared for consumer and expert feedback. 
 
 ## Table of contents
 1. Databases
