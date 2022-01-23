@@ -1,4 +1,8 @@
-### API to promote off-street parking munich	
+### API to promote off-street parking munich
+Important note!!
+----------------------------------------------------------------------------------------------------------------------------	
+Lastly, also an activated google API key named k in a file named API.py must be added to the folder. This key is not provided, because this key must be linked to you bank account. However, usage is initially free of charge (e.g. if the 200 euro free credit budget is not exceeded). The API uses the google API multiple times, though all testing and development required not more than 6 euros of credits.
+----------------------------------------------------------------------------------------------------------------------------	
 
 ## Project description
 
@@ -13,42 +17,40 @@ _Currently only the first database is used in the API, the other datafiles may b
 | File path                                     | Description                                                    |
 |-----------------------------------------------|----------------------------------------------------------------|
 | P_R_Datenbank_2019_ohne.xlsx                  | MVV P+R database edited for specific API use                   |
+| Parking_Munich\Data\Muenchenosm.pbf		| Open Street Maps file for Munich				 |
 | Parking_Munich\Data\Parkings_in_and_near.xlsx | Partly cleaned OSM parking data Munich area                    |
 | Parking_Munich\Data\Parkings_in_only          | Subset of file above with only places within Munich		 |
 | Parking_Munich\Data\Only_in_and_with_cap	| Subset of file above with only parkings with known capacity	 |
-| Parking_Munich\Data\Muenchenosm.pbf		| Open Street Maps file for Munich				 |
 
-				
+2. Application Programming Interface (API)			
+_Used to make Python functions requestable via the internet._
 
+| File path                                     | Description                                                    |
+|-----------------------------------------------|----------------------------------------------------------------|
+| Parking_Munich\parking_api.py              	| Actual API, uses static, template and Data folders             |
+								
 
-				area
---------------------------------------------------------------
+3. Jupyter Notebooks			
+_May be used to analyse datasets and recreate datasets in \Data folder out of the OSM file._
 
-2. Application Programming 		Used to make Python functions 
-Interface (API)				requestable via the internet
---------------------------------------------------------------									
-Parking_Munich\parking_api.py	Actual API, uses static, 								template and Data folders
---------------------------------------------------------------
+| File path                                     	| Description                                                    |
+|-----------------------------------------------	|----------------------------------------------------------------|
+| Parking_Munich\parking_application_clean.ipynb	| Contains 2 API functions, useful for testing purposes		 |
+| Parking_Munich\Charging.ipynb				| Subset OSM charging station data		 		 |
+| Parking_Munich\Munich_dataset_analysis		| Analyse and extract and the OSM data				 |
 
-3. Jupyter Notebooks			Used to analyse datasets and to 							prove concepts
---------------------------------------------------------------	
-Parking_Munich\parking_applic	Jupyter Notebook with two 
-ation_clean.ipynb			functions written to use in the 							API, may be used for testing
+4. Screenshots				
 
-Parking_Munich\Charging.ipynb	Jupyter lab to subset OSM data 							on charging stations in Munich
+| File path                                     	| Description                                                    |
+|-----------------------------------------------	|----------------------------------------------------------------|
+| Parking_Munich\Screens				| Screenshots of the API to illustarate functionalities		 |
 
-Parking_Munich\Munich_dataset	Jupyter lab to analyse and 
-_analysis					extract and the OSM data 
-						to create the three non-MVV 							datasets
-4. Screenshots				Screenshots of the API to 								illustarate the functionalities 							of the API
---------------------------------------------------------------	
-Parking_Munich\Screens		jpg files to illustrate usage
+## How to install and run the project
 
+This is a python based project developed using Python 3.8, 
+all listed packes below may all be installed using pip install ... in anaconda prompt.
 
-----------------------------------------------------------------------------------------------------------------------------	
-4. How to Install and Run the Project
-----------------------------------------------------------------------------------------------------------------------------	
-This is a python based project, developed using Python 3.8, running the api requires the following packages, that may all be installed using pip install ... in anaconda prompt
+Running the API requires the following packages:
 
 flask
 pandas
@@ -67,10 +69,7 @@ osmnx
 pyrosm
 ast
  
-----------------------------------------------------------------------------------------------------------------------------	
-Important note!!
-----------------------------------------------------------------------------------------------------------------------------	
-Lastly, also an activated google API key named k in a file named API.py must be added to the folder. This key is not provided, because this key must be linked to you bank account. However, usage is initially free of charge (e.g. if the 200 euro free credit budget is not exceeded). The API uses the google API multiple times, though all testing and development required not more than 6 euros of credits.
+
 
 --------------------------------------------------------------
 --------------------------------------------------------------
