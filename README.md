@@ -1,14 +1,28 @@
-### API to promote off-street parking munich
-Important note
-----------------------------------------------------------------------------------------------------------------------------	
-An activated google API key named k in a file named API.py must be added to the folder. This key is not provided, because this key must be linked to you bank account. However, usage is initially free of charge (e.g. if the 200 euro free credit budget is not exceeded). The API uses the google API multiple times, though all testing and development required not more than 6 euros of credits.
-----------------------------------------------------------------------------------------------------------------------------	
+## API to promote off-street parking munich
+
+**Important note**
+
+_An activated google API key named k in a file named API.py must be added to the folder. This key is not provided, because this key must be linked to you bank account. However, usage is initially free of charge (e.g. if the 200 euro free credit budget is not exceeded). The API uses the google API multiple times, though all testing and development required not more than 6 euros of credits._
 
 ## Project description
 
-API to find the nearest off-parking in Munich, given the origin (anywhere, also outside of Munich), destination and parking time (stay duration). The API will return a selection of the five nearest parkings, the traveltime by car to the given destination, to the parking and traveltimes by foot, bike or public transport from the parking garage to the given destination. Moreover, the application also returns costs of street-parking and the planned street-parking costs if these are available and relevant. In this manner, the application enables consumers to make a adequate decision and stimulates off-street parking and alternative means of last-mile transport.
+This project is a Python based Application Programming Interface (API), that can be seen as a tool to support consumers to find the nearest off-street parking in Munich. Moreover, the application enables consumers to compare these off-street parking with on-street parking near their destination. If applicable the application also calculates and views the costs if new parking tariffs of the City of Munich, that are currently under review, are indeed implemented. These costs are calculated depending on the city part, according to the tariffs on the map below.
 
-Currently only P+R locations that are regulated by the MVV are in the dataset. However, any commercially or publicly operated parking in Munich may be added to the dataset \Parking_Munich\Data\P_R_Datenbank_2019_ohne.xlsx with at least a name, lat and lon, for the application to calculate traveltimes and compare it with the street-parking alternative in the region of the destination.
+![Figure 1-3](static/parking_tariffs.png?raw=True "Parking tariffs Munich")
+
+
+**Inputs**
+
+As an input it requires an:
+- Origin (anywhere, also outside of Munich)
+- Destination (inside or around Munich)
+- Parking time of max 24 hours. 
+
+**Outputs**
+
+The API will return a selection of the five nearest parkings, the traveltime by car to the given destination, to the parking and traveltimes by foot, bike or public transport from the parking garage to the given destination. Moreover, the application also returns costs of street-parking and the planned street-parking costs if these are available and relevant. In this manner, the application enables consumers to make an adequate decision and stimulates off-street parking and alternative means of last-mile transport.
+
+Currently only P+R locations that are regulated by the MVV are in the dataset. However, any commercially or publicly operated parking in Munich may be added to the dataset \Parking_Munich\Data\P_R_Datenbank_2019_ohne.xlsx with at least a name, lat and lon, for the application to calculate traveltimes and compare it with the street-parking alternative in the region of the destinations. Parking at P+R locations is limited to max 24h.
 
 ## Table of contents
 1. Databases
@@ -23,7 +37,7 @@ _Currently only the first database is used in the API, the other datafiles may b
 | Parking_Munich\Data\Parkings_in_only          | Subset of file above with only places within Munich		 |
 | Parking_Munich\Data\Only_in_and_with_cap	| Subset of file above with only parkings with known capacity	 |
 
-2. Application Programming Interface (API)
+2. API
 		
 _Used to make Python functions requestable via the internet._
 
@@ -119,11 +133,11 @@ http://127.0.0.1:5000/giveindestination?origin=augsburg,germany&destination=arci
 
 Results in:
 
-![Figure 1-1](Screens/overview_result_query_1_from_readme.jpg?raw=True "Results from query 1: overview")
+![Figure 1-2](Screens/overview_result_query_1_from_readme.jpg?raw=True "Results from query 1: overview")
 
 Navigating to http://127.0.0.1:5000/check_availability afterwards gives:
 
-![Figure 1-2](Screens/Availability_result_query_1_from_readme.jpg?raw=True "Results from query 1: availability")
+![Figure 1-3](Screens/Availability_result_query_1_from_readme.jpg?raw=True "Results from query 1: availability")
 
 2. Travelling from Freising to Hohenschwangaustraße,17, planning to stay 6 hours and 30 minutes and interested in all other available information
 
@@ -131,11 +145,11 @@ http://127.0.0.1:5000/giveindestination?origin=Freising,Germany&destination=Hohe
 
 Results in:
 
-![Figure 1-3](Screens/overview_result_query_2_from_readme.jpg?raw=True "Results from query 2: overview")
+![Figure 1-4](Screens/overview_result_query_2_from_readme.jpg?raw=True "Results from query 2: overview")
 
 Navigating to http://127.0.0.1:5000/check_availability afterwards gives:
 
-![Figure 1-4](Screens/Availability_result_query_2_from_readme.jpg?raw=True "Results from query 2: availability")
+![Figure 1-5](Screens/Availability_result_query_2_from_readme.jpg?raw=True "Results from query 2: availability")
 
 
 3. Travelling from Vaterstetten to Marienplatz, planning to stay 10 hours and interested in all other available information
@@ -144,8 +158,8 @@ http://127.0.0.1:5000/giveindestination?origin=vaterstetten,Germany&destination=
 
 Results in:
 
-![Figure 1-5](Screens/overview_result_query_3_from_readme.jpg?raw=True "Results from query 3: overview")
+![Figure 1-6](Screens/overview_result_query_3_from_readme.jpg?raw=True "Results from query 3: overview")
 
 Navigating to http://127.0.0.1:5000/check_availability afterwards gives:
 
-![Figure 1-6](Screens/Availability_result_query_3_from_readme.jpg?raw=True "Results from query 3: availability")
+![Figure 1-7](Screens/Availability_result_query_3_from_readme.jpg?raw=True "Results from query 3: availability")
