@@ -1,42 +1,27 @@
-----------------------------------------------------------------------------------------------------------------------------
-1. Project title :API to promote off-street parking munich
-----------------------------------------------------------------------------------------------------------------------------	
+### API to promote off-street parking munich	
 
-----------------------------------------------------------------------------------------------------------------------------2. Project description
-----------------------------------------------------------------------------------------------------------------------------
+## Project description
 
-API to find the nearest off-parking in Munich, given the origin (anywhere, also outside of Munich), destination and parking time (stay duration). The API will return a selection of the five nearest parkings, the traveltime by car to the given destination, to the parking and traveltimes by foot, bike or public transport from the parking garage to the given destination. 
-
-Moreover, the application also returns costs of street-parking and the planned street-parking costs if these are available and relevant. In this manner, the application enables consumers to make a adequate decision and stimulates off-street parking and alternative means of last-mile transport.
+API to find the nearest off-parking in Munich, given the origin (anywhere, also outside of Munich), destination and parking time (stay duration). The API will return a selection of the five nearest parkings, the traveltime by car to the given destination, to the parking and traveltimes by foot, bike or public transport from the parking garage to the given destination. Moreover, the application also returns costs of street-parking and the planned street-parking costs if these are available and relevant. In this manner, the application enables consumers to make a adequate decision and stimulates off-street parking and alternative means of last-mile transport.
 
 Currently only P+R locations that are regulated by the MVV are in the dataset. However, any commercially or publicly operated parking in Munich may be added to the dataset \Parking_Munich\Data\P_R_Datenbank_2019_ohne.xlsx with at least a name, lat and lon, for the application to calculate traveltimes and compare it with the street-parking alternative in the region of the destination.
 
---------------------------------------------------------------
---------------------------------------------------------------
-3. ProjectOutline
-----------------------------------------------------------------------------------------------------------------------------
+## Table of contents
+1. Databases
+_Currently only the first database is used in the API, the other datafiles may be appended after adequate cleaning._
 
---------------------------------------------------------------
-File						Description
---------------------------------------------------------------
-1. Databases				Currently only the first 							database is used in the API, 
-						the other datafiles may be 							appended after thorough cleaning
---------------------------------------------------------------
+| File path                                     | Description                                                    |
+|-----------------------------------------------|----------------------------------------------------------------|
+| P_R_Datenbank_2019_ohne.xlsx                  | MVV P+R database edited for specific API use                   |
+| Parking_Munich\Data\Parkings_in_and_near.xlsx | Partly cleaned OSM parking data Munich area                    |
+| Parking_Munich\Data\Parkings_in_only          | Subset of file above with only places within Munich		 |
+| Parking_Munich\Data\Only_in_and_with_cap	| Subset of file above with only parkings with known capacity	 |
+| Parking_Munich\Data\Muenchenosm.pbf		| Open Street Maps file for Munich				 |
 
-Parking_Munich\Data\			MVV P+R database edited for 
-P_R_Datenbank_2019_ohne.xlsx	specific API use								
-Parking_Munich\Data\Parkings	Partly cleaned OSM parking data 
-_in_and_near.xlsx			Munich Area
+				
 
-Parking_Munich\Data\Parkings	Partly cleaned OSM parking data,
-_in_only			 		subset of places within Munich
 
-Parking_Munich\Data\Only_in_	Partly cleaned OSM parking data, 
-and_with_cap				subset of places within Munich 
-						and only with known capacity
-
-Parking_Munich\Data\Muenchen.	Open Street Maps file for Munich
-osm.pbf					area
+				area
 --------------------------------------------------------------
 
 2. Application Programming 		Used to make Python functions 
@@ -135,11 +120,11 @@ After a query is excuted a jpg is generated to visualize the availability for th
 ----------------------------------------------------------------------------------------------------------------------------	
 Traveling from augsburg to the arcisstrasse in Munich, planning to stay 7 hours and 15 miutes and just interested in core information:
 
-http://127.0.0.1:5000/giveindestination?origin=augsburg,germany&destination=arcisstraﬂe 23,Munich,Germany&parkingtime=7, 15
+http://127.0.0.1:5000/giveindestination?origin=augsburg,germany&destination=arcisstra√üe 23,Munich,Germany&parkingtime=7, 15
 -----------------------------------------------------------------	
-Travelling from Freising to Hohenschwangaustraﬂe,17, planning to stay 6 hours and 30 minutes and interested in all other available information
+Travelling from Freising to Hohenschwangaustra√üe,17, planning to stay 6 hours and 30 minutes and interested in all other available information
 
-http://127.0.0.1:5000/giveindestination?origin=Freising,Germany&destination=Hohenschwangaustraﬂe,17,Munich,Germany&parkingtime=6, 30&woman=True&invalid=True&family=True&display_dist=True
+http://127.0.0.1:5000/giveindestination?origin=Freising,Germany&destination=Hohenschwangaustra√üe,17,Munich,Germany&parkingtime=6, 30&woman=True&invalid=True&family=True&display_dist=True
 -----------------------------------------------------------------
 Travelling from Vaterstetten to Marienplatz, planning to stay 10 hours and interested in all other available information
 
