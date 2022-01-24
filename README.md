@@ -152,19 +152,19 @@ The API calls the function find_nearest_parkings, this function consists of the 
 4. Calculate travel times to final destination for 5 hemispherically nearest parking garages, for 3 forms of transport and travel times from origin to parking (uses Google API 3*5+5 = 15x).
 5. Final output data selection and preparation, drop unnecessary columns, partly based on optional function (user) input.
 
-Thus, the Google API is executed 21 times during one cycle. However, the total execution time is only 3.11s and might be optimized by programming some parts of the code a bit more efficient. E.g. by determining the district in which each parking is, and only search in nearby districts for a given location. However, this was not feasible during the limited project time span.
+Thus, the Google API is executed 21 times during one cycle. However, the total execution time is only 3.11s and might be optimized by programming some parts of the code a bit more efficient. E.g. by determining the district in which each parking is, and only searching in nearby districts for a given location. However, this was not feasible during the limited project period.
 
 ### 2. View expected availability
 
 **How to use the function**
 
-_After a query is executed a jpg is generated to visualize the availability for the found parking garages._ 
+_After a query is executed, a jpg is generated to visualize the availability for the found parking garages._ 
 
 This figure is available at http://127.0.0.1:5000/check_availability or can be viewed directly from the static folder.
 
 **How it works**
 
-The function vis_occ is automatically called when the find_nearest_parkings function is executed. It takes a dataframe with the availability of x amount of parking garages in it and visualizes the parking garages for which there is occupancy data available. Plotting this data happens according to the usual Python procedure, a vertical line that visualizes the current time is also plotted. A more detailed description of this process may be found in the comments of the code.
+The function vis_occ is automatically called when the find_nearest_parkings function is executed. It takes a data frame with the availability of x amount of parking garages in it and visualizes the parking garages for which there is occupancy data available. Plotting this data happens according to the usual Python procedure, a vertical line that visualizes the current time is also plotted. A more detailed description of this process may be found in the comments of the code.
 
 ## Example queries
 
