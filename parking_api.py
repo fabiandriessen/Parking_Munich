@@ -149,7 +149,7 @@ def find_nearest_parking(origin, destination, parking_time, display_dist=False, 
 def vis_occ(a):
 
     #Delete parkings of which we don't have the occupancy
-    a.dropna(how="all", axis=1, inplace=True)
+    a.dropna(how="all", axis=0, inplace=True)
 
     #Give columns plottable name
     a.columns=list(np.arange(5,23,1))
